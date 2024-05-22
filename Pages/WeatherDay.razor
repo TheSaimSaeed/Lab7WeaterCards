@@ -1,0 +1,53 @@
+﻿@using Data
+@inject WeatherForecastService WeatherService
+
+
+
+
+
+    <div class="card bg-light m-2">
+        <div class="card-body text-center">
+            <span class="h1">@WeatherIcon</span>
+            <h1 class="card-title">@TemperatureC C&deg;</h1>
+            <p class="card-text">
+                @Summary weather expected @DayofWeek
+            </p>
+        </div>
+    </div>
+
+
+
+@code {
+    [Parameter]
+     public DayOfWeek DayofWeek { get; set; }
+    [Parameter]
+     public int TemperatureC { get; set; }
+    [Parameter]
+     public string Summary { get; set; } = "Unknown";
+    
+    string WeatherIcon =>
+      Summary == "Cloudy" ? "\u2601" : 
+      Summary == "Rainy" ? "🌧️" :  
+      "\u2600";                         
+
+    
+ 
+
+    protected override async Task OnInitializedAsync()
+    {
+        var forecasts = await WeatherService.GetForecastAsync();
+       
+        var random = new Random();
+        var randomForecast = forecasts.ElementAtOrDefault(random.Next(forecasts.Count()));
+        if (randomForecast != null)
+        {
+            Summary = randomForecast.Summary;
+            TemperatureC = randomForecast.TemperatureC;
+            DayofWeek = randomForecast.Date.DayOfWeek;
+        }
+
+
+     }
+
+   
+}

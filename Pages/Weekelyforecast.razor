@@ -1,0 +1,24 @@
+﻿@page "/WeeklyForecast"
+@using Data
+@inject WeatherForecastService WeatherService
+
+<h3>Weekly Forecast</h3>
+<h3>M.Saim Saeed</h3>
+
+
+
+<div class="d-flex">
+   
+    @foreach (var forecast in WeatherService.GetForecastAsync().Result)
+    {
+        <WeatherDay TemperatureC="@forecast.TemperatureC"
+                    Summary="@forecast.Summary"
+                    DayOfWeek="@forecast.Date.DayOfWeek">
+        </WeatherDay>
+    }
+</div>
+
+@code {
+    
+       
+}
